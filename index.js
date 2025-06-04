@@ -59,8 +59,16 @@ const readableNumber = (num) => {
 
 const run = async () => {
     try {
-        const eos = await getEosBalance('core.vaulta');
-        const percent = eos / 2_100_000_000;
+        const [eos, rex, ram, stake] = await Promise.all([
+            getEosBalance('eosio'),
+            getEosBalance('eosio.rex'),
+            getEosBalance('eosio.ram'),
+            getEosBalance('eosio.stake')
+        ]);
+
+        const lockedEos = await getEosBalance('eosio');
+
+        const percent = (eos + rex + ram + stake) / (2_100_000_000 - lockedEos);
 
         const date = new Date();
         const readableDate = date.toISOString().split('.')[0].replace('T', '@');
