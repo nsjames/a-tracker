@@ -68,12 +68,14 @@ const run = async () => {
 
         const lockedEos = await getEosBalance('eosio');
 
-        const swapped = eos + rex + ram + stake;
-        const percent = swapped / (2_100_000_000 - lockedEos);
+        const percent = eos / (2_100_000_000 - lockedEos);
+
+        const shrodingersSwapped = eos + rex + ram + stake;
+        const shrodingersPercent = shrodingersSwapped / (2_100_000_000 - lockedEos);
 
         const date = new Date();
         const readableDate = date.toISOString().split('.')[0].replace('T', '@');
-        await appendToSheet('DATA!A1', [[+date, readableDate, eos, readableNumber(eos), parseFloat(percent*100).toFixed(2)]]);
+        await appendToSheet('DATA!A1', [[+date, readableDate, eos, readableNumber(eos), parseFloat(percent*100).toFixed(2), shrodingersSwapped, readableNumber(shrodingersSwapped), parseFloat(shrodingersPercent*100).toFixed(2)]]);
     } catch (err) {
         console.error(err);
     }
